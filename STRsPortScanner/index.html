@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src = "./view.js" ></script>
+</head>
+<body>
+    <form onsubmit="return false" class="form-row">
+        <label class="" for="address">Address</label>
+        <input type="text" id="address" value="8.8.8.8"/>
+        <label class="col-form-label" for="sPort">Start Port</label>
+        <input type="text" id="sPort" value="50"/>
+        <label class="sr-only" for="sPort">End Port</label>
+        <input type="text" id="ePort" value="55"/>
+        <input type="radio" id="tcpRadio" name="mode" value="TCP" checked> TCP
+        <input type="radio" name="mode" id="udpRadio" value="UDP"> UDP
+        <input type="submit" id="startScanID" onclick="startScan()" value="Start"/>
+        <input type="button" onclick="removeMarked()" value="Remove"/>
+    </form>
+
+    <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button tablink w3-red" onclick="openTab(event, 'tcpDiv')">TCP RESULTS</button>
+        <button class="w3-bar-item w3-button tablink" onclick="openTab(event, 'udpDiv')">UDP RESULTS</button>
+    </div>
+    <b id="keyLoaded"></b>
+    <div class="loader hide-loader" id="loader"></div>
+
+    <!-- tab divs start -->
+    <div id="tcpDiv" class="scanResults">
+        <input type="text" id="tcpFilter" class="filterInput" onkeyup="tcpFilter()" placeholder="Search for address..">
+        <table id="tcpResultTable">
+            <tr class="header">
+                <th style="width:60%;">IP</th>
+                <th style="width:40%;">PORT</th>
+            </tr>
+        </table>
+    </div>
+    <!-- -->
+    <div id="udpDiv" class="scanResults" style="display: none">
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            UDP SCANS REQUIRES SUDO AND ARE UNRELIABLE!
+        </div>
+        <input type="text" id="udpFilter" class="filterInput" onkeyup="udpFilter()" placeholder="Search for address..">
+        <table id="udpResultTable">
+            <tr class="header">
+                <th style="width:60%;">IP</th>
+                <th style="width:40%;">PORT</th>
+            </tr>
+        </table>
+    </div>
+    <!-- tab divs stop -->
+    <!-- sql modal Modal -->
+    <div class="w3-container">
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content w3-card-4" style="max-width:600px">
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-small w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+                <form onsubmit="return false" class="w3-container" id="sqlForm">
+                    <div class="w3-section">
+                        <label><b>Server</b></label>
+                        <input class="w3-input w3-border w3-margin-bottom" id="sqlServer" type="text" placeholder="Server" name="Server" value="mysql.dsv.su.se" required>
+                        <label><b>Database name</b></label>
+                        <input class="w3-input w3-border" type="text" id="sqlDB" placeholder="database" name="database" value="lape5427" required>
+                        <label><b>User</b></label>
+                        <input class="w3-input w3-border" type="text" id="sqlUser" placeholder="User" name="User" value="lape5427" required>
+                        <label><b>Password</b></label>
+                        <input class="w3-input w3-border" type="password" id="sqlPW" placeholder="Password" name="password" value="railaeyeeh6E" required>
+                        <button class="w3-button w3-block w3-green w3-section w3-padding" onclick="ioSQL('import')" type="submit">Import</button>
+                        <button class="w3-button w3-block w3-green w3-section w3-padding" onclick="ioSQL('export')" type="submit">Export</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- tcp sender modal -->
+    <div class="w3-container">
+        <div id="id02" class="w3-modal">
+            <div class="w3-modal-content w3-card-4" style="max-width:600px">
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-small w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+                <form class="w3-container" id="tcpSenderModal">
+                    <div class="w3-section">
+                        <label><b>IP</b></label>
+                        <input class="w3-input w3-border w3-margin-bottom" id="psIP" type="text" placeholder="ip" name="ip" value="54.175.103.105" required>
+                        <label><b>Port</b></label>
+                        <input class="w3-input w3-border" type="text" id="psPORT" placeholder="port" name="port" value="30000" required>
+                        <textarea name="comment" id="psPL" form="tcpSenderModal">Enter payload</textarea>
+                        <button class="w3-button w3-block w3-green w3-section w3-padding" onclick="sendCustomPacket()" type="submit">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
